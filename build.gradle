@@ -35,7 +35,7 @@ dependencies {
     compile libpacks.spring
     compile libpacks.swagger
     compile libpacks.lombok
-    compile libpacks.mongoDb
+//    compile libpacks.mongoDb
     compile libpacks.testing
     testCompile("junit:junit")
 }
