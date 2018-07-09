@@ -18,6 +18,8 @@ public interface ServerOperation {
 
     void updateServer(Server server);
 
+    void deleteServer(Server server);
+
     void updateSetting(SheduleSetting sheduleSetting);
 
     List<PingResponse> getInfo();

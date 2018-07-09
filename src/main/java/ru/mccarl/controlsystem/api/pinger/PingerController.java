@@ -2,22 +2,23 @@ package ru.mccarl.controlsystem.api.pinger;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import ru.mccarl.controlsystem.api.pinger.impl.PingerImpl;
+
+import javax.annotation.PostConstruct;
 
 
 @Slf4j
 @Component
 public class PingerController {
 
+    @Autowired
+    private Pinger pinger;
+
     private static Thread pingThread;
 
-    public static void init() {
+    @PostConstruct
+    public void init() {
         pingThread = new Thread(() -> {
-            PingerImpl pinger = new PingerImpl();
             try {
                 pinger.checkActiveServers();
             } catch (Exception e) {
@@ -28,8 +29,13 @@ public class PingerController {
     }
 
     public void restartPinger() {
-        pingThread.interrupt();
-        pingThread.start();
+        try {
+            pingThread.stop();
+            pingThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        init();
     }
 
 }

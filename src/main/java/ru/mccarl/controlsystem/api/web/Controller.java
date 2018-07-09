@@ -41,34 +41,41 @@ public class Controller {
 
     @ApiOperation(value = "Update server")
     @PatchMapping(value = "/server")
-    public ResponseEntity ping(@PathVariable @Valid Server server) {
+    public ResponseEntity updateServer(@RequestBody @Valid Server server) {
         serverOperation.updateServer(server);
+        return ResponseEntity.ok().build();
+    }
+
+    @ApiOperation(value = "Delete server")
+    @DeleteMapping(value = "/server")
+    public ResponseEntity deleteServer(@RequestBody @Valid Server server) {
+        serverOperation.deleteServer(server);
         return ResponseEntity.ok().build();
     }
 
     @ApiOperation(value = "Update server setting")
     @PatchMapping(value = "/setting")
-    public ResponseEntity ping(@PathVariable @Valid SheduleSetting sheduleSetting) {
+    public ResponseEntity updateSetting(@RequestBody @Valid SheduleSetting sheduleSetting) {
         serverOperation.updateSetting(sheduleSetting);
         return ResponseEntity.ok().build();
     }
 
-    @ApiOperation(value = "post server")
+    @ApiOperation(value = "Add server")
     @PostMapping(value = "/server")
-    public ResponseEntity postInfo(@RequestBody @Valid Server server) {
+    public ResponseEntity addServer(@RequestBody @Valid Server server) {
         serverOperation.saveServer(server);
         return ResponseEntity.ok().build();
     }
 
-    @ApiOperation(value = "post simple data")
+    @ApiOperation(value = "Change settings")
     @PutMapping(value = "/setting")
     public ResponseEntity updateSettings(@RequestBody @Valid SheduleSetting setting) {
         serverOperation.saveSetting(setting);
         return ResponseEntity.ok().build();
     }
 
-    @ApiOperation(value = "Get pinger info")
-    @GetMapping(value = "/pinger")
+    @ApiOperation(value = "Get pinger result")
+    @GetMapping(value = "/pinger/logs")
     public Map<String, List<PingResponse>> getInfo() {
         Map<String, List<PingResponse>> response = new HashMap<>();
         response.put("data", serverOperation.getInfo());

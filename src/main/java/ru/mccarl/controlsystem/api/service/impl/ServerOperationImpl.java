@@ -34,6 +34,12 @@ public class ServerOperationImpl implements ServerOperation {
 
     @Override
     public void saveServer(Server server) {
+        List<Server> servers = inMemoryDb.getServers();
+        Server existServer = servers.stream().filter(item -> item.getUrl().equals(server.getOldUrl())).findFirst().get();
+        int index = servers.indexOf(existServer);
+        if (index > 0) {
+            return;
+        }
         inMemoryDb.addServer(server);
     }
 
@@ -45,7 +51,9 @@ public class ServerOperationImpl implements ServerOperation {
     @Override
     public void updateServer(Server server) {
         if (!StringUtils.isEmpty(server.getOldUrl())) {
-            int index = inMemoryDb.getServers().indexOf(server.getOldUrl());
+            List<Server> servers = inMemoryDb.getServers();
+            Server existServer = servers.stream().filter(item -> item.getUrl().equals(server.getOldUrl())).findFirst().get();
+            int index = servers.indexOf(existServer);
             inMemoryDb.updateServer(index, server);
         }
     }
@@ -57,8 +65,15 @@ public class ServerOperationImpl implements ServerOperation {
     }
 
     @Override
-    public List<PingResponse> getInfo(){
+    public List<PingResponse> getInfo() {
         return inMemoryDb.getInfo();
+    }
+
+    @Override
+    public void deleteServer(Server server) {
+        List<Server> servers = inMemoryDb.getServers();
+        Server existServer = servers.stream().filter(item -> item.getUrl().equals(server.getOldUrl())).findFirst().get();
+        inMemoryDb.deleteServer(servers.indexOf(existServer));
     }
 
 }

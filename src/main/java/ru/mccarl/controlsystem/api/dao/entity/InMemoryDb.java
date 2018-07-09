@@ -2,8 +2,7 @@ package ru.mccarl.controlsystem.api.dao.entity;
 
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class InMemoryDb {
@@ -48,5 +47,10 @@ public class InMemoryDb {
 
     public List<PingResponse> getInfo(){
         return CHECK_HISTORY;
+    }
+
+    public boolean deleteServer(int index){
+        SERVER_LIST.remove(index);
+        return true;
     }
 }
